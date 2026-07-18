@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spa H2O Dayma — Ritual de agua para tu piel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E2226;
+    --teal:#0D4E52;
+    --teal-deep:#083638;
+    --teal-pale:#DCEDE9;
+    --cream:#F7F2E8;
+    --gold:#B8945B;
+    --gold-light:#E4C98B;
+    --rose:#C77F76;
+    --line: rgba(16,38,42,0.14);
+    --line-light: rgba(247,242,232,0.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px; height:7px; border-radius:50%;
+    background:currentColor;
+    display:inline-block;
+  }
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:450; line-height:1.05;}
+  .btn{
+    font-family:'Inter'; font-weight:600; font-size:14.5px;
+    padding:15px 30px; border-radius:100px;
+    display:inline-flex; align-items:center; gap:10px;
+    cursor:pointer; border:1px solid transparent;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), background .3s, color .3s, border-color .3s;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+  .btn-solid{background:var(--gold); color:var(--teal-deep);}
+  .btn-solid:hover{background:var(--gold-light);}
+  .btn-ghost{border-color:var(--line-light); color:var(--cream);}
+  .btn-ghost:hover{background:rgba(247,242,232,0.08); border-color:var(--cream);}
+  .btn-ghost-dark{border-color:var(--line); color:var(--teal-deep);}
+  .btn-ghost-dark:hover{background:rgba(13,78,82,0.06);}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    padding:22px 0;
+    transition: background .4s, padding .4s, box-shadow .4s;
+  }
+  header.scrolled{
+    padding:14px 0;
+    background:rgba(14,34,38,0.92);
+    backdrop-filter: blur(10px);
+    box-shadow:0 1px 0 var(--line-light);
+  }
+  nav{display:flex; align-items:center; justify-content:space-between;}
+  .brand{display:flex; align-items:center; gap:11px; font-family:'Fraunces', serif; font-size:19px; color:var(--cream); letter-spacing:0.01em;}
+  .brand svg{width:26px; height:26px;}
+  .nav-links{display:flex; gap:34px; font-size:14px; font-weight:500; color:var(--cream);}
+  .nav-links a{opacity:0.82; transition:opacity .25s;}
+  .nav-links a:hover{opacity:1;}
+  .nav-cta{display:flex; align-items:center; gap:18px;}
+  .nav-toggle{display:none; background:none; border:none; color:var(--cream); font-size:26px; cursor:pointer;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    background: radial-gradient(120% 90% at 78% 12%, #12595d 0%, var(--teal) 42%, var(--teal-deep) 100%);
+    color:var(--cream);
+    display:flex; align-items:center;
+    padding:150px 0 100px;
+    overflow:hidden;
+  }
+  #ripple-field{position:absolute; inset:0; width:100%; height:100%;}
+  .hero-inner{position:relative; z-index:2; display:grid; grid-template-columns:1.15fr 0.85fr; gap:40px; align-items:end; width:100%;}
+  .hero-copy .eyebrow{color:var(--gold-light);}
+  .hero h1{
+    font-size:clamp(40px, 5.4vw, 72px);
+    margin:22px 0 26px;
+    max-width:12ch;
+    color:var(--cream);
+  }
+  .hero h1 em{font-style:italic; color:var(--gold-light); font-weight:450;}
+  .hero p.sub{
+    font-size:17px; line-height:1.6; max-width:44ch; color:rgba(247,242,232,0.78);
+    margin-bottom:38px;
+  }
+  .hero-actions{display:flex; gap:16px; flex-wrap:wrap;}
+  .hero-side{
+    display:flex; flex-direction:column; gap:18px;
+    border-left:1px solid var(--line-light);
+    padding-left:32px;
+  }
+  .hero-stat{display:flex; flex-direction:column; gap:2px;}
+  .hero-stat .num{font-family:'Fraunces', serif; font-size:30px; color:var(--gold-light);}
+  .hero-stat .label{font-family:'Space Mono', monospace; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(247,242,232,0.62);}
+  .scroll-cue{
+    position:absolute; bottom:34px; left:32px; z-index:2;
+    display:flex; align-items:center; gap:10px;
+    font-family:'Space Mono', monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase;
+    color:rgba(247,242,232,0.6);
+  }
+  .scroll-cue .drop{width:9px; height:9px; border-radius:50% 50% 50% 0; background:var(--gold-light); transform:rotate(45deg); animation:fall 1.8s ease-in-out infinite;}
+  @keyframes fall{0%{transform:translateY(-4px) rotate(45deg); opacity:0.3;} 50%{opacity:1;} 100%{transform:translateY(6px) rotate(45deg); opacity:0.3;}}
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{padding:120px 0;}
+  .sec-head{display:flex; justify-content:space-between; align-items:flex-end; gap:30px; margin-bottom:64px;}
+  .sec-head .eyebrow{color:var(--gold); margin-bottom:16px;}
+  .sec-head h2{font-size:clamp(30px,3.6vw,46px); max-width:14ch;}
+  .sec-head p{max-width:36ch; font-size:15px; line-height:1.65; color:rgba(14,34,38,0.62); padding-bottom:4px;}
+
+  /* ---------- SERVICIOS / MENU COMPLETO ---------- */
+  .servicios{background:var(--cream);}
+  .menu-tabs{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;}
+  .tab-btn{
+    font-family:'Space Mono', monospace; font-size:12px; letter-spacing:0.04em;
+    padding:11px 20px; border-radius:100px; border:1px solid var(--line);
+    background:#fff; color:rgba(14,34,38,0.6); cursor:pointer;
+    transition:background .25s, border-color .25s, color .25s, transform .25s;
+  }
+  .tab-btn:hover{border-color:var(--gold); transform:translateY(-1px);}
+  .tab-btn.active{background:var(--teal-deep); border-color:var(--teal-deep); color:var(--cream);}
+  .tab-btn:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+
+  .menu-panels{
+    background:#fff; border:1px solid var(--line); border-radius:26px;
+    padding:44px 46px; margin-top:28px;
+  }
+  .menu-panel{display:none;}
+  .menu-panel.active{display:block; animation:menuFade .4s ease;}
+  @keyframes menuFade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+  .menu-panel-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:22px; gap:16px; flex-wrap:wrap;}
+  .menu-panel-head h3{font-size:22px; font-weight:450;}
+  .menu-panel-head span{font-family:'Space Mono', monospace; font-size:11.5px; color:rgba(14,34,38,0.45); text-transform:uppercase; letter-spacing:0.08em;}
+
+  .menu-list{columns:1; column-gap:52px;}
+  .menu-list.two-col{columns:2 260px;}
+  .menu-row{
+    display:flex; align-items:baseline; gap:8px; padding:13px 0;
+    border-top:1px solid var(--line); break-inside:avoid;
+  }
+  .menu-list > .menu-row:first-child{border-top:none;}
+  .m-name{font-size:14.5px; font-weight:600;}
+  .m-name small{font-family:'Space Mono', monospace; font-weight:400; font-size:11px; color:rgba(14,34,38,0.46); margin-left:6px;}
+  .m-fill{flex:1; min-width:16px; border-bottom:1.5px dotted var(--line); transform:translateY(-4px);}
+  .m-price{font-family:'Space Mono', monospace; font-weight:700; font-size:14px; color:var(--teal-deep); white-space:nowrap;}
+  .menu-note{font-size:12.5px; color:rgba(14,34,38,0.48); margin-top:24px; line-height:1.6;}
+
+  /* ---------- TIENDA BAND ---------- */
+  .tienda{
+    background:var(--teal-deep);
+    color:var(--cream);
+    position:relative;
+    overflow:hidden;
+  }
+  .tienda .wrap{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;}
+  .tienda .eyebrow{color:var(--gold-light);}
+  .tienda h2{font-size:clamp(28px,3.4vw,42px); margin:18px 0 20px; max-width:13ch;}
+  .tienda p{font-size:15.5px; line-height:1.7; color:rgba(247,242,232,0.72); max-width:42ch; margin-bottom:30px;}
+  .product-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .product-pill{
+    font-family:'Space Mono', monospace; font-size:12px; letter-spacing:0.04em;
+    border:1px solid var(--line-light); border-radius:100px; padding:9px 18px;
+    color:rgba(247,242,232,0.85);
+  }
+  .droplet-orbit{position:relative; height:340px;}
+  .droplet-orbit svg{width:100%; height:100%;}
+
+  /* ---------- TESTIMONIOS / SEGUIDORAS ---------- */
+  .social-proof{background:var(--cream); padding-top:0; padding-bottom:0;}
+  .social-proof .wrap{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:46px 32px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    flex-wrap:wrap; gap:20px;
+  }
+  .sp-item{display:flex; flex-direction:column; gap:4px;}
+  .sp-item .num{font-family:'Fraunces', serif; font-size:34px; color:var(--teal-deep);}
+  .sp-item .label{font-family:'Space Mono', monospace; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(14,34,38,0.55);}
+
+  /* ---------- UBICACION ---------- */
+  .ubicacion{background:var(--cream);}
+  .loc-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px;}
+  .loc-card{
+    background:#fff; border:1px solid var(--line); border-radius:24px; padding:44px;
+  }
+  .loc-card h3{font-size:15px; font-family:'Space Mono', monospace; text-transform:uppercase; letter-spacing:0.1em; color:var(--gold); margin-bottom:22px; font-weight:400;}
+  .info-row{display:flex; gap:16px; padding:16px 0; border-top:1px solid var(--line);}
+  .info-row:first-of-type{border-top:none;}
+  .info-row .ico{width:34px; height:34px; border-radius:50%; background:var(--teal-pale); color:var(--teal); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .info-row .ico svg{width:16px; height:16px;}
+  .info-row .txt{font-size:14.5px; line-height:1.55;}
+  .info-row .txt .k{display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(14,34,38,0.48); margin-bottom:3px; font-family:'Space Mono', monospace;}
+  .map-visual{
+    border-radius:24px; overflow:hidden; position:relative;
+    background: radial-gradient(120% 100% at 30% 20%, #12595d, var(--teal-deep));
+    min-height:100%;
+  }
+  .map-visual svg{position:absolute; inset:0; width:100%; height:100%;}
+  .map-pin{position:absolute; top:46%; left:52%; transform:translate(-50%,-100%);}
+
+  /* ---------- RESERVAR ---------- */
+  .reservar{
+    background: linear-gradient(180deg, var(--cream), var(--teal-pale));
+    padding-bottom:140px;
+  }
+  .booking-grid{display:grid; grid-template-columns:1.15fr 0.85fr; gap:44px; align-items:start;}
+  .booking-form{
+    background:#fff; border:1px solid var(--line); border-radius:26px; padding:44px;
+  }
+  .step{margin-bottom:38px;}
+  .step:last-of-type{margin-bottom:0;}
+  .step-label{
+    display:flex; align-items:center; gap:12px;
+    font-family:'Space Mono', monospace; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:18px;
+  }
+  .step-label .n{
+    width:22px; height:22px; border-radius:50%; background:var(--teal-pale); color:var(--teal-deep);
+    display:flex; align-items:center; justify-content:center; font-family:'Fraunces', serif; font-size:12px;
+  }
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .field{display:flex; flex-direction:column; gap:8px; margin-bottom:16px;}
+  .field label{font-size:12.5px; font-weight:600; color:rgba(14,34,38,0.65);}
+  .field input, .field textarea, .field select{
+    font-family:'Inter'; font-size:14.5px; padding:13px 15px;
+    border:1.5px solid var(--line); border-radius:12px; background:var(--cream);
+    color:var(--ink); transition:border-color .25s, background .25s;
+    width:100%; appearance:none;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{outline:none; border-color:var(--teal-deep); background:#fff;}
+  .field textarea{resize:vertical; min-height:80px; font-family:'Inter';}
+  .field select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230E2226' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 15px center; padding-right:38px;
+  }
+  .field select:disabled{opacity:0.55; cursor:not-allowed;}
+
+  .time-chip-group{display:flex; gap:10px; flex-wrap:wrap;}
+  .time-chip{
+    position:relative; cursor:pointer;
+    border:1.5px solid var(--line); border-radius:100px; padding:10px 18px;
+    font-size:13.5px; font-weight:500; transition:border-color .25s, background .25s;
+  }
+  .time-chip input{position:absolute; opacity:0; pointer-events:none;}
+  .time-chip.checked{border-color:var(--teal-deep); background:var(--teal-deep); color:var(--cream);}
+  .time-chip:focus-within{outline:2px solid var(--gold); outline-offset:2px;}
+
+  .booking-submit{width:100%; justify-content:center; margin-top:8px;}
+  .form-note{font-size:12.5px; color:rgba(14,34,38,0.5); margin-top:14px; text-align:center; line-height:1.5;}
+
+  .summary-card{
+    background:var(--teal-deep); color:var(--cream);
+    border-radius:26px; padding:38px; position:sticky; top:110px;
+    overflow:hidden;
+  }
+  .summary-card .eyebrow{color:var(--gold-light); margin-bottom:22px;}
+  .summary-line{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:14px;
+    padding:16px 0; border-top:1px dashed var(--line-light);
+    font-size:14px;
+  }
+  .summary-line:first-of-type{border-top:none;}
+  .summary-line .k{color:rgba(247,242,232,0.55); font-family:'Space Mono', monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em;}
+  .summary-line .v{font-family:'Fraunces', serif; font-size:17px; text-align:right;}
+  .summary-total{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-top:18px; padding-top:18px; border-top:1px solid var(--line-light);
+  }
+  .summary-total .k{font-size:13px; color:rgba(247,242,232,0.7);}
+  .summary-total .v{font-family:'Space Mono', monospace; font-weight:700; font-size:26px; color:var(--gold-light);}
+  .summary-hint{font-size:12.5px; color:rgba(247,242,232,0.55); line-height:1.6; margin-top:22px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink); color:rgba(247,242,232,0.7); padding:64px 0 34px;}
+  .foot-top{display:flex; justify-content:space-between; align-items:flex-start; gap:40px; flex-wrap:wrap; padding-bottom:44px; border-bottom:1px solid var(--line-light);}
+  .foot-brand{display:flex; align-items:center; gap:11px; color:var(--cream); font-family:'Fraunces', serif; font-size:19px;}
+  .foot-cols{display:flex; gap:70px; flex-wrap:wrap;}
+  .foot-col h4{font-family:'Space Mono', monospace; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-light); margin-bottom:16px; font-weight:400;}
+  .foot-col a, .foot-col span{display:block; font-size:14px; margin-bottom:10px; opacity:0.82;}
+  .foot-col a:hover{opacity:1;}
+  .foot-bottom{display:flex; justify-content:space-between; padding-top:26px; font-size:12.5px; color:rgba(247,242,232,0.42); flex-wrap:wrap; gap:10px;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:980px){
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-side{border-left:none; border-top:1px solid var(--line-light); padding-left:0; padding-top:24px; flex-direction:row; gap:40px;}
+    .tienda .wrap{grid-template-columns:1fr;}
+    .droplet-orbit{height:220px;}
+    .loc-grid{grid-template-columns:1fr;}
+    .map-visual{min-height:280px;}
+    .reserva-grid, .booking-grid{grid-template-columns:1fr;}
+    .summary-card{position:static;}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 22px;}
+    .nav-links{display:none;}
+    .nav-toggle{display:block;}
+    section{padding:80px 0;}
+    .sec-head{flex-direction:column; align-items:flex-start;}
+    .social-proof .wrap{justify-content:space-between; gap:26px 34px;}
+    .foot-cols{gap:36px;}
+    .menu-panels{padding:30px 22px;}
+    .menu-list.two-col{columns:1;}
+    .field-row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="wrap">
+    <nav>
+      <a href="#" class="brand" aria-label="Spa H2O Dayma">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 11 5 15.5C5 19.6 8.13 22 12 22C15.87 22 19 19.6 19 15.5C19 11 12 2 12 2Z" fill="#E4C98B"/></svg>
+        Spa H2O Dayma
+      </a>
+      <div class="nav-links">
+        <a href="#rituales">Rituales</a>
+        <a href="#tienda">Tienda</a>
+        <a href="#ubicacion">Ubicación</a>
+      </div>
+      <div class="nav-cta">
+        <a href="#reservar" class="btn btn-ghost" style="padding:11px 22px; font-size:13.5px;">Agendar</a>
+      </div>
+      <button class="nav-toggle" aria-label="Abrir menú">☰</button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <svg id="ripple-field" aria-hidden="true"></svg>
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <span class="eyebrow">Spa &amp; tienda de bienestar · Los Prados</span>
+      <h1>El agua que le devuelve la calma <em>a tu piel</em></h1>
+      <p class="sub">Masajes, limpiezas faciales y rituales de aromaterapia pensados como una pausa, no como un lujo ocasional. Cada tratamiento empieza igual que una gota: en silencio, y termina en ondas que se sienten toda la semana.</p>
+      <div class="hero-actions">
+        <a href="#reservar" class="btn btn-solid">Reservar un ritual</a>
+        <a href="#rituales" class="btn btn-ghost">Ver tratamientos</a>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div class="hero-stat"><span class="num">161</span><span class="label">Rituales documentados</span></div>
+      <div class="hero-stat"><span class="num">1,654</span><span class="label">Clientas en la comunidad</span></div>
+      <div class="hero-stat"><span class="num">4</span><span class="label">Salas de tratamiento</span></div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span class="drop"></span> Desliza para explorar</div>
+</section>
+
+<section class="servicios" id="rituales">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Menú completo</span>
+        <h2>Cada tratamiento, a su propio ritmo</h2>
+      </div>
+      <p>Precios en pesos dominicanos (RD$). Elige una categoría para ver el detalle.</p>
+    </div>
+    <div class="menu-tabs" id="menuTabs" role="tablist" aria-label="Categorías del menú"></div>
+    <div class="menu-panels" id="menuPanels"></div>
+    <p class="menu-note">Los precios pueden variar durante promociones de temporada (Día de las Madres, cumpleaños del spa, etc.). Consulta disponibilidad y ofertas vigentes por WhatsApp.</p>
+  </div>
+</section>
+
+<section class="social-proof">
+  <div class="wrap">
+    <div class="sp-item"><span class="num">161</span><span class="label">Rituales compartidos</span></div>
+    <div class="sp-item"><span class="num">1,654</span><span class="label">Seguidoras de la comunidad</span></div>
+    <div class="sp-item"><span class="num">822</span><span class="label">Marcas y spas aliados</span></div>
+    <div class="sp-item"><span class="num">5+</span><span class="label">Años cuidando pieles</span></div>
+  </div>
+</section>
+
+<section class="tienda" id="tienda">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Tienda de bienestar</span>
+      <h2>Lleva el ritual a casa</h2>
+      <p>Seleccionamos los mismos productos que usamos en sala: aceites, sales, cremas y velas pensadas para que la calma no se quede en la puerta del spa.</p>
+      <div class="product-row">
+        <span class="product-pill">Aceites de aromaterapia</span>
+        <span class="product-pill">Sales exfoliantes</span>
+        <span class="product-pill">Velos de colágeno</span>
+        <span class="product-pill">Velas &amp; toallas spa</span>
+      </div>
+    </div>
+    <div class="droplet-orbit">
+      <svg viewBox="0 0 320 320" fill="none">
+        <circle cx="160" cy="160" r="70" stroke="#E4C98B" stroke-width="1" opacity="0.5"/>
+        <circle cx="160" cy="160" r="110" stroke="#E4C98B" stroke-width="1" opacity="0.32"/>
+        <circle cx="160" cy="160" r="150" stroke="#E4C98B" stroke-width="1" opacity="0.16"/>
+        <path d="M160 96C160 96 122 148 122 176C122 199.196 138.804 216 160 216C181.196 216 198 199.196 198 176C198 148 160 96 160 96Z" fill="#E4C98B"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="ubicacion" id="ubicacion">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Visítanos</span>
+        <h2>Un rincón de agua en Los Prados</h2>
+      </div>
+      <p>A pasos de Plaza Charles Summer — fácil de encontrar, fácil de repetir.</p>
+    </div>
+    <div class="loc-grid">
+      <div class="loc-card">
+        <h3>Contacto &amp; horario</h3>
+        <div class="info-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <div class="txt"><span class="k">Dirección</span>Charles Summer No. 53, Plaza Charles Summer, Local 29B, Los Prados, Santo Domingo, D.N.</div>
+        </div>
+        <div class="info-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+          <div class="txt"><span class="k">Teléfonos</span>809-387-8910 · 849-656-3185 · 809-373-9997</div>
+        </div>
+        <div class="info-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C6.5 2 2 6.04 2 11c0 4.17 3.13 7.66 7.36 8.65-.1-.75-.19-1.9.04-2.72.21-.75 1.35-4.76 1.35-4.76s-.34-.69-.34-1.7c0-1.6.93-2.79 2.08-2.79.98 0 1.46.74 1.46 1.62 0 .99-.63 2.46-.95 3.83-.27 1.15.58 2.09 1.71 2.09 2.06 0 3.64-2.17 3.64-5.29 0-2.77-1.99-4.7-4.83-4.7-3.29 0-5.22 2.47-5.22 5.02 0 1 .38 2.06.86 2.65.09.11.11.21.08.32-.09.36-.28 1.15-.32 1.31-.05.21-.17.25-.39.15-1.46-.68-2.37-2.81-2.37-4.53 0-3.7 2.69-7.09 7.75-7.09 4.07 0 7.23 2.9 7.23 6.77 0 4.04-2.55 7.3-6.08 7.3-1.19 0-2.3-.62-2.68-1.35 0 0-.59 2.24-.73 2.79-.26 1.02-.98 2.29-1.46 3.07.99.31 2.04.47 3.13.47 5.5 0 10-4.04 10-9 0-4.96-4.5-9-10-9z"/></svg></span>
+          <div class="txt"><span class="k">Horario</span>Lunes a sábado, 9:00am – 6:00pm. Cerrado domingos y feriados nacionales.</div>
+        </div>
+        <div class="info-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg></span>
+          <div class="txt"><span class="k">Correo &amp; redes</span>spah2odayma@gmail.com · @spah2odayma</div>
+        </div>
+      </div>
+      <div class="map-visual" aria-hidden="true">
+        <svg viewBox="0 0 400 400"><path d="M0 260 C 80 220, 160 300, 240 250 S 400 200, 400 200" stroke="#E4C98B" stroke-width="1" opacity="0.28" fill="none"/><path d="M0 320 C 100 280, 180 350, 280 300 S 400 260, 400 260" stroke="#E4C98B" stroke-width="1" opacity="0.18" fill="none"/></svg>
+        <div class="map-pin">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 11 5 15.5C5 19.6 8.13 22 12 22C15.87 22 19 19.6 19 15.5C19 11 12 2 12 2Z" fill="#E4C98B"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reservar" id="reservar">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Reserva tu espacio</span>
+        <h2>Agenda tu ritual en tres pasos</h2>
+      </div>
+      <p>Completa el formulario y confírmalo por WhatsApp — respondemos en menos de 24 horas.</p>
+    </div>
+
+    <div class="booking-grid">
+      <form class="booking-form" id="bookingForm">
+
+        <div class="step">
+          <div class="step-label"><span class="n">1</span> Elige tu tratamiento</div>
+          <div class="field-row">
+            <div class="field">
+              <label for="categoria">Categoría</label>
+              <select id="categoria" name="categoria" required></select>
+            </div>
+            <div class="field">
+              <label for="tratamiento">Tratamiento</label>
+              <select id="tratamiento" name="tratamiento" required></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-label"><span class="n">2</span> Fecha y horario</div>
+          <div class="field-row">
+            <div class="field">
+              <label for="fecha">Fecha</label>
+              <input type="date" id="fecha" name="fecha" required>
+            </div>
+            <div class="field">
+              <label>Horario preferido</label>
+              <div class="time-chip-group" id="timeGroup">
+                <label class="time-chip">
+                  <input type="radio" name="horario" value="Mañana (9am–12pm)" required>
+                  Mañana
+                </label>
+                <label class="time-chip">
+                  <input type="radio" name="horario" value="Tarde (1pm–3:30pm)">
+                  Tarde
+                </label>
+                <label class="time-chip">
+                  <input type="radio" name="horario" value="Fin de tarde (3:30pm–6pm)">
+                  Fin de tarde
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-label"><span class="n">3</span> Tus datos</div>
+          <div class="field-row">
+            <div class="field">
+              <label for="nombre">Nombre completo</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Ej. Carla Báez" required>
+            </div>
+            <div class="field">
+              <label for="telefono">Teléfono / WhatsApp</label>
+              <input type="tel" id="telefono" name="telefono" placeholder="809-000-0000" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="notas">Notas (opcional)</label>
+            <textarea id="notas" name="notas" placeholder="Alergias, preferencia de terapeuta, ocasión especial..."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-solid booking-submit">Confirmar por WhatsApp</button>
+        <p class="form-note">Al confirmar se abrirá WhatsApp con tu solicitud ya redactada — solo debes enviarla. No se realiza ningún cargo en este paso.</p>
+      </form>
+
+      <aside class="summary-card">
+        <span class="eyebrow">Resumen de tu cita</span>
+        <div class="summary-line"><span class="k">Tratamiento</span><span class="v" id="sumTratamiento">Por elegir</span></div>
+        <div class="summary-line"><span class="k">Fecha</span><span class="v" id="sumFecha">Por elegir</span></div>
+        <div class="summary-line"><span class="k">Horario</span><span class="v" id="sumHorario">Por elegir</span></div>
+        <div class="summary-line"><span class="k">A nombre de</span><span class="v" id="sumNombre">—</span></div>
+        <div class="summary-total"><span class="k">Total estimado</span><span class="v" id="sumPrecio">RD$0</span></div>
+        <p class="summary-hint">El pago se realiza en el spa el día de tu cita. Este resumen es solo una guía — nuestro equipo confirmará disponibilidad real por WhatsApp.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none"><path d="M12 2C12 2 5 11 5 15.5C5 19.6 8.13 22 12 22C15.87 22 19 19.6 19 15.5C19 11 12 2 12 2Z" fill="#E4C98B"/></svg>
+        Spa H2O Dayma
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>Explorar</h4>
+          <a href="#rituales">Rituales</a>
+          <a href="#tienda">Tienda</a>
+          <a href="#ubicacion">Ubicación</a>
+        </div>
+        <div class="foot-col">
+          <h4>Contacto</h4>
+          <span>809-387-8910</span>
+          <span>849-656-3185</span>
+          <span>spah2odayma@gmail.com</span>
+        </div>
+        <div class="foot-col">
+          <h4>Visítanos</h4>
+          <span>Plaza Charles Summer, Local 29B</span>
+          <span>Los Prados, Santo Domingo, D.N.</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Spa H2O Dayma. Todos los derechos reservados.</span>
+      <span>Sitio de demostración — no es la página oficial.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // header background on scroll
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ripple field in hero: gentle ambient ripples + one on click
+  const svgNS = "http://www.w3.org/2000/svg";
+  const field = document.getElementById('ripple-field');
+  let fw = field.clientWidth, fh = field.clientHeight;
+  field.setAttribute('viewBox', `0 0 ${fw} ${fh}`);
+
+  function spawnRipple(x, y, maxR, dur, opacity){
+    const c = document.createElementNS(svgNS, 'circle');
+    c.setAttribute('cx', x);
+    c.setAttribute('cy', y);
+    c.setAttribute('r', 2);
+    c.setAttribute('fill', 'none');
+    c.setAttribute('stroke', '#E4C98B');
+    c.setAttribute('stroke-width', '1');
+    c.setAttribute('opacity', opacity);
+    field.appendChild(c);
+    const start = performance.now();
+    function tick(now){
+      const t = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - t, 3);
+      c.setAttribute('r', 2 + eased * maxR);
+      c.setAttribute('opacity', opacity * (1 - t));
+      if(t < 1){ requestAnimationFrame(tick); } else { c.remove(); }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function ambientRipple(){
+    const x = fw * (0.15 + Math.random() * 0.7);
+    const y = fh * (0.1 + Math.random() * 0.75);
+    spawnRipple(x, y, 90 + Math.random()*70, 4200, 0.35);
+  }
+  let ambientTimer;
+  function startAmbient(){
+    ambientRipple();
+    ambientTimer = setInterval(ambientRipple, 1400);
+  }
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduceMotion){ startAmbient(); }
+
+  document.querySelector('.hero').addEventListener('click', (e) => {
+    if(reduceMotion) return;
+    const rect = field.getBoundingClientRect();
+    spawnRipple(e.clientX - rect.left, e.clientY - rect.top, 160, 900, 0.7);
+  });
+
+  window.addEventListener('resize', () => {
+    fw = field.clientWidth; fh = field.clientHeight;
+    field.setAttribute('viewBox', `0 0 ${fw} ${fh}`);
+  });
+
+  // ---------- menu data (single source for the price list and the booking form) ----------
+  const MENU = {
+    masajes: {
+      label: "Masajes y reflexología",
+      items: [
+        {name:"Masaje Relax", duration:"60 min", price:2000},
+        {name:"Masaje de Aroma", duration:"60 min", price:2000},
+        {name:"Masaje Deportivo", duration:"60 min", price:2000},
+        {name:"Reflexología de Manos", duration:"30 min", price:1000},
+        {name:"Reflexología de Pies", duration:"30 min", price:1000},
+        {name:"Masaje Drenaje Linfático", duration:"60 min", price:2000},
+        {name:"Masaje Craneal", duration:"30 min", price:1000},
+        {name:"Masaje Combinado 3 Técnicas", duration:"60 min", price:2800},
+        {name:"Masaje de Piedras Calientes", duration:"60 min", price:2500},
+        {name:"Masaje de Zona", duration:"30 min", price:1000}
+      ]
+    },
+    exfoliaciones: {
+      label: "Exfoliaciones corporales",
+      items: [
+        {name:"Sales Marinas", duration:"mineraliza", price:1500},
+        {name:"Hierbas Orgánicas", duration:"aporta elasticidad", price:1500},
+        {name:"Algas Marinas", duration:"desintoxica", price:1500},
+        {name:"Chocolate Orgánico", duration:null, price:1500}
+      ]
+    },
+    envolturas: {
+      label: "Envolturas (90 min)",
+      items: [
+        {name:"Capullo de Chocolate", duration:"hidrata", price:4500},
+        {name:"Capullo de Vitaminas", duration:"vitalizante + hidrata", price:4500},
+        {name:"Capullo de Algas Marinas", duration:"reafirmante y desintoxicante", price:4500},
+        {name:"Capullo de Fango Volcánico", duration:"reafirmante", price:4500}
+      ]
+    },
+    peeling: {
+      label: "Peeling",
+      items: [
+        {name:"Peeling Facial", duration:null, price:1500},
+        {name:"Peeling Corporal", duration:null, price:5000},
+        {name:"Peeling Área de Bikini", duration:null, price:1500},
+        {name:"Peeling Área de Axilas", duration:null, price:1500},
+        {name:"Peeling Área de los Codos", duration:null, price:1500},
+        {name:"Peeling Área de Espalda", duration:null, price:2500},
+        {name:"Peeling de Pies", duration:null, price:2500}
+      ]
+    },
+    depilaciones: {
+      label: "Depilaciones",
+      items: [
+        {name:"Cejas", duration:null, price:300},
+        {name:"Labio Superior", duration:null, price:300},
+        {name:"Axilas", duration:null, price:400},
+        {name:"Bikini", duration:null, price:700},
+        {name:"Muslo", duration:null, price:800},
+        {name:"Piernas", duration:null, price:800},
+        {name:"Espalda", duration:null, price:2500},
+        {name:"Brazos", duration:null, price:1200},
+        {name:"Brasileña", duration:null, price:1500},
+        {name:"Media Piernas", duration:null, price:800},
+        {name:"Piernas Completas", duration:null, price:1600},
+        {name:"Glúteo", duration:null, price:2000}
+      ]
+    }
+  };
+  const fmtPrice = n => 'RD$' + Number(n).toLocaleString('es-DO');
+
+  // ---------- render the tabbed price menu ----------
+  const menuTabs = document.getElementById('menuTabs');
+  const menuPanels = document.getElementById('menuPanels');
+  if(menuTabs && menuPanels){
+    const catKeys = Object.keys(MENU);
+    catKeys.forEach((key, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+      btn.dataset.cat = key;
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      btn.textContent = MENU[key].label;
+      menuTabs.appendChild(btn);
+
+      const panel = document.createElement('div');
+      panel.className = 'menu-panel' + (i === 0 ? ' active' : '');
+      panel.dataset.panel = key;
+
+      const head = document.createElement('div');
+      head.className = 'menu-panel-head';
+      head.innerHTML = `<h3>${MENU[key].label}</h3><span>${MENU[key].items.length} servicios</span>`;
+      panel.appendChild(head);
+
+      const list = document.createElement('div');
+      list.className = 'menu-list' + (MENU[key].items.length > 6 ? ' two-col' : '');
+      MENU[key].items.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'menu-row';
+        row.innerHTML = `<span class="m-name">${item.name}${item.duration ? ` <small>${item.duration}</small>` : ''}</span><span class="m-fill"></span><span class="m-price">${fmtPrice(item.price)}</span>`;
+        list.appendChild(row);
+      });
+      panel.appendChild(list);
+      menuPanels.appendChild(panel);
+    });
+
+    menuTabs.addEventListener('click', (e) => {
+      const btn = e.target.closest('.tab-btn');
+      if(!btn) return;
+      menuTabs.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      menuPanels.querySelectorAll('.menu-panel').forEach(p => {
+        p.classList.toggle('active', p.dataset.panel === btn.dataset.cat);
+      });
+    });
+  }
+
+  // ---------- booking form ----------
+  const bookingForm = document.getElementById('bookingForm');
+  if(bookingForm){
+    const categoriaSelect = document.getElementById('categoria');
+    const tratamientoSelect = document.getElementById('tratamiento');
+    const timeChips = bookingForm.querySelectorAll('.time-chip');
+    const sumTratamiento = document.getElementById('sumTratamiento');
+    const sumFecha = document.getElementById('sumFecha');
+    const sumHorario = document.getElementById('sumHorario');
+    const sumNombre = document.getElementById('sumNombre');
+    const sumPrecio = document.getElementById('sumPrecio');
+    const fechaInput = document.getElementById('fecha');
+    const nombreInput = document.getElementById('nombre');
+
+    Object.keys(MENU).forEach(key => {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = MENU[key].label;
+      categoriaSelect.appendChild(opt);
+    });
+
+    function populateTratamientos(catKey){
+      tratamientoSelect.innerHTML = '';
+      MENU[catKey].items.forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.name;
+        opt.dataset.price = item.price;
+        opt.textContent = `${item.name} — ${fmtPrice(item.price)}${item.duration ? ' · ' + item.duration : ''}`;
+        tratamientoSelect.appendChild(opt);
+      });
+    }
+    populateTratamientos(categoriaSelect.value);
+    categoriaSelect.addEventListener('change', () => {
+      populateTratamientos(categoriaSelect.value);
+      refreshSummary();
+    });
+
+    function fmtFecha(iso){
+      if(!iso) return 'Por elegir';
+      const [y,m,d] = iso.split('-');
+      const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+      return `${parseInt(d,10)} ${meses[parseInt(m,10)-1]} ${y}`;
+    }
+
+    function refreshSummary(){
+      const chosen = tratamientoSelect.selectedOptions[0];
+      if(chosen){
+        sumTratamiento.textContent = chosen.value;
+        sumPrecio.textContent = fmtPrice(chosen.dataset.price);
+      } else {
+        sumTratamiento.textContent = 'Por elegir';
+        sumPrecio.textContent = 'RD$0';
+      }
+
+      const checkedTime = bookingForm.querySelector('input[name="horario"]:checked');
+      timeChips.forEach(c => c.classList.toggle('checked', c.querySelector('input').checked));
+      sumHorario.textContent = checkedTime ? checkedTime.value : 'Por elegir';
+
+      sumFecha.textContent = fmtFecha(fechaInput.value);
+      sumNombre.textContent = nombreInput.value.trim() || '—';
+    }
+
+    bookingForm.addEventListener('change', refreshSummary);
+    bookingForm.addEventListener('input', refreshSummary);
+    refreshSummary();
+
+    bookingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if(!bookingForm.checkValidity()){
+        bookingForm.reportValidity();
+        return;
+      }
+      const tratamiento = tratamientoSelect.value;
+      const horario = bookingForm.querySelector('input[name="horario"]:checked')?.value || '';
+      const fecha = fmtFecha(fechaInput.value);
+      const nombre = nombreInput.value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const notas = document.getElementById('notas').value.trim();
+
+      let msg = `Hola Spa H2O Dayma, quisiera reservar una cita.\n\n`;
+      msg += `Tratamiento: ${tratamiento}\n`;
+      msg += `Fecha: ${fecha}\n`;
+      msg += `Horario preferido: ${horario}\n`;
+      msg += `Nombre: ${nombre}\n`;
+      msg += `Teléfono: ${telefono}\n`;
+      if(notas) msg += `Notas: ${notas}\n`;
+
+      const url = `https://wa.me/18093878910?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank', 'noopener');
+    });
+  }
+
+  // mobile nav toggle -> simple smooth-scroll fallback (links already in DOM, just ensure focus works)
+  document.querySelector('.nav-toggle').addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    const visible = links.style.display === 'flex';
+    links.style.display = visible ? 'none' : 'flex';
+    links.style.flexDirection = 'column';
+    links.style.position = 'fixed';
+    links.style.top = '64px';
+    links.style.right = '22px';
+    links.style.background = 'rgba(14,34,38,0.97)';
+    links.style.padding = '20px 26px';
+    links.style.borderRadius = '16px';
+    links.style.gap = '16px';
+  });
+</script>
+</body>
+</html>
